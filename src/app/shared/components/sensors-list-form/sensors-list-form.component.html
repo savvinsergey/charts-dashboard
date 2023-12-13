@@ -1,0 +1,30 @@
+<small class="text-muted">Please choose sensors:</small>
+<select class="form-select mb-2"
+        [(ngModel)]="selectedSensor">
+  <option *ngFor="let sensor of list"
+          [value]="sensor">
+    {{ sensor }}
+  </option>
+</select>
+<button type="button" class="btn btn-light w-100"
+        (click)="onAddSensorToGroup()">
+  Add
+</button>
+
+<div class="group-items-list"
+     *ngIf="sensorsGroup.length">
+  <div class="group-item badge bg-light text-dark"
+       *ngFor="let sensor of sensorsGroup; let idx = index">
+    {{ sensor.name }}
+    <a class="btn-close" aria-label="Close"
+      (click)="onRemoveSensorFromGroup(idx)"></a>
+  </div>
+</div>
+
+<button type="button" class="btn btn-primary w-100"
+        *ngIf="sensorsGroup.length"
+        (click)="onCreateGroup()">
+  Create group
+</button>
+
+

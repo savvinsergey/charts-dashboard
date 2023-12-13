@@ -1,0 +1,23 @@
+.chart-block {
+  padding: 50px;
+
+  .chart-top {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .color-select {
+      width: 150px;
+    }
+  }
+
+  .chart {
+    width: 100%;
+    height: 400px;
+    display: block;
+  }
+}
+
+
+
+

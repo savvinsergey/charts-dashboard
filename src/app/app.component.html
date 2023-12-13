@@ -1,0 +1,14 @@
+<div class="container">
+  <div class="row align-items-start">
+    <div class="col-3 p-3">
+      <app-sensors-list-form [list]="sensorsList"
+                             (groupCreated)="onGroupCreated($event)">
+      </app-sensors-list-form>
+    </div>
+    <div class="col p-3">
+      <ng-container *ngFor="let sensorGroup of sensorGroups">
+        <app-chart [sensors]="sensorGroup"></app-chart>
+      </ng-container>
+    </div>
+  </div>
+</div>

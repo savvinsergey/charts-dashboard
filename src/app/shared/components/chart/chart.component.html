@@ -1,0 +1,33 @@
+<div class="chart-block">
+  <div class="chart-top">
+    <div class="btn-group" role="group" aria-label="Basic example">
+      <button type="button" class="btn"
+              [ngClass]="currentType === chartTypes.LINE ? 'btn-primary' : 'btn-light'"
+              (click)="onChangeType(chartTypes.LINE)">
+        Line
+      </button>
+      <button type="button" class="btn"
+              [ngClass]="currentType === chartTypes.BAR ? 'btn-primary' : 'btn-light'"
+              (click)="onChangeType(chartTypes.BAR)">
+        Bar
+      </button>
+    </div>
+
+    <select class="form-select color-select"
+            [ngModel]="chartColors[0]"
+            (ngModelChange)="onChangeColor($event)">
+      <option *ngFor="let color of chartColors"
+              [value]="color">
+        {{ color }}
+      </option>
+    </select>
+  </div>
+
+  <highcharts-chart
+    class="chart"
+    [Highcharts]="Highcharts"
+    [options]="chartOptions"
+    [(update)]="updateFlag"
+  ></highcharts-chart>
+</div>
+
