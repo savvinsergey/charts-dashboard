@@ -1,33 +1,39 @@
 <div class="chart-block">
   <div class="chart-top">
-    <div class="btn-group" role="group" aria-label="Basic example">
+    <div class="btn-group"
+         role="group" aria-label="Chart buttons">
       <button type="button" class="btn"
-              [ngClass]="currentType === chartTypes.LINE ? 'btn-primary' : 'btn-light'"
-              (click)="onChangeType(chartTypes.LINE)">
+              [ngClass]="currentType === types.LINE ? 'btn-primary' : 'btn-light'"
+              (click)="onChangeType(types.LINE)">
         Line
       </button>
       <button type="button" class="btn"
-              [ngClass]="currentType === chartTypes.BAR ? 'btn-primary' : 'btn-light'"
-              (click)="onChangeType(chartTypes.BAR)">
+              [ngClass]="currentType === types.BAR ? 'btn-primary' : 'btn-light'"
+              (click)="onChangeType(types.BAR)">
         Bar
       </button>
     </div>
 
-    <select class="form-select color-select"
-            [ngModel]="chartColors[0]"
-            (ngModelChange)="onChangeColor($event)">
-      <option *ngFor="let color of chartColors"
-              [value]="color">
-        {{ color }}
-      </option>
-    </select>
+    <div class="d-flex flex-row align-items-center"
+      *ngIf="colors?.length">
+      <select class="form-select color-select"
+              [ngModel]="colors[0]"
+              (ngModelChange)="onChangeColor($event)">
+        <option *ngFor="let color of colors"
+                [value]="color">
+          {{ color }}
+        </option>
+      </select>
+      <button type="button" class="btn-close mx-2" aria-label="Close"
+              (click)="removed.emit()"></button>
+    </div>
   </div>
 
   <highcharts-chart
     class="chart"
     [Highcharts]="Highcharts"
     [options]="chartOptions"
-    [(update)]="updateFlag"
-  ></highcharts-chart>
+    [(update)]="updateFlag">
+  </highcharts-chart>
 </div>
 

@@ -1,20 +1,20 @@
 import {
+  Attribute,
   ChangeDetectionStrategy, ChangeDetectorRef,
-  Component, DestroyRef, inject,
+  Component, DestroyRef, EventEmitter, inject,
   Input,
-  OnChanges,
+  OnChanges, Output,
   SimpleChanges
 } from '@angular/core';
 import {HighchartsChartModule} from 'highcharts-angular';
 import * as Highcharts from 'highcharts';
 import {EChartType} from "../../enums/chart-type.enum";
 import {CommonModule} from "@angular/common";
-import {CChartColor} from "../../constants/chart-color.const";
 import {FormsModule} from "@angular/forms";
-import {ChartsDataService} from "../../services/charts-data.service";
-import {ISensor} from "../../interfaces/chart-data.interface";
+import {ISensor} from "../../interfaces/sensor.interface";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {Observable} from "rxjs";
+import {IChartData} from "../../interfaces/chart-data.interface";
 
 @Component({
   selector: 'app-chart',
@@ -35,12 +35,13 @@ export class ChartComponent implements OnChanges {
   //-------------------------//
 
   @Input() sensors: ISensor[] = [];
+  @Input() colors!: string[];
+  @Input() types!: typeof EChartType;
+
+  @Output() removed = new EventEmitter<void>();
 
   public updateFlag = false;
-  public currentType = EChartType.LINE;
-
-  public readonly chartTypes = EChartType;
-  public readonly chartColors = CChartColor;
+  public currentType!: EChartType;
 
   public readonly Highcharts: typeof Highcharts = Highcharts;
   public chartOptions: Highcharts.Options = {
@@ -51,18 +52,17 @@ export class ChartComponent implements OnChanges {
   };
 
   ngOnChanges(changes: SimpleChanges): void {
-    const sensors = changes['sensors']?.currentValue
+    const sensors: ISensor[] = changes['sensors']?.currentValue;
     if (sensors?.length) {
-      this.sensors.forEach((sensor, index) => {
-        // @ts-ignore
-        this.chartOptions.series[index] = {
-          name: sensor.name as string,
-          type: this.currentType,
-          color: this.chartColors[0],
-        }
-
+      sensors.forEach((sensor, index) => {
+        this.initChartSeries(sensor, index)
         this.subscribeToSource(sensor.source, index);
       });
+    }
+
+    const types: typeof EChartType = changes['types']?.currentValue;
+    if (types) {
+      this.currentType = EChartType.LINE;
     }
   }
 
@@ -80,7 +80,16 @@ export class ChartComponent implements OnChanges {
     this.updateFlag = true;
   }
 
-  private subscribeToSource(source: { data$: Observable<number[]>}, index: number) {
+  private initChartSeries(sensor: ISensor, index: number): void {
+    // @ts-ignore
+    this.chartOptions.series[index] = {
+      name: sensor.name as string,
+      type: this.currentType,
+      color: this.colors?.[0] || 'grey',
+    }
+  }
+
+  private subscribeToSource(source: IChartData<number[]>, index: number): void {
     source.data$
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((data) => {
@@ -88,7 +97,7 @@ export class ChartComponent implements OnChanges {
         this.chartOptions.series[index].data = data;
         this.updateFlag = true;
 
-        this.cdr.detectChanges();
+        this.cdr.markForCheck();
       });
   }
 }

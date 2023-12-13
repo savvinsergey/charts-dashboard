@@ -1,6 +1,9 @@
-import {Component, inject} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {CSensorsList} from "./shared/constants/sensors-list.const";
-import {ISensor} from "./shared/interfaces/chart-data.interface";
+import {DrawerComponent} from "./shared/components/drawer/drawer.component";
+import {ISensorsGroup} from "./shared/interfaces/sensors-group.interface";
+import {CChartColor} from "./shared/constants/chart-color.const";
+import {EChartType} from "./shared/enums/chart-type.enum";
 
 @Component({
   selector: 'app-root',
@@ -8,11 +11,34 @@ import {ISensor} from "./shared/interfaces/chart-data.interface";
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+  @ViewChild('addChartDrawer', { read: DrawerComponent })
+  addChartDrawer!: DrawerComponent;
+
+  public readonly maxAmountCharts = 2;
+  public readonly chartTypes = EChartType;
+  public readonly chartColors = CChartColor;
   public readonly sensorsList = CSensorsList;
 
-  public sensorGroups: ISensor[][] = [];
+  public sensorGroups: ISensorsGroup[] = [];
 
-  public onGroupCreated(sensorsGroup: ISensor[]) {
-    this.sensorGroups.push(sensorsGroup)
+  public get maxWarningTooltip() {
+    return `Maximum ${this.maxAmountCharts} charts can be located on the dashboard`;
+  }
+
+  public trackBy(index: number, sensorsGroup: ISensorsGroup): string {
+    return sensorsGroup.id;
+  }
+
+  public onAddChart(sensorsGroup: ISensorsGroup) {
+    this.sensorGroups = [...this.sensorGroups, sensorsGroup];
+    this.addChartDrawer.close();
+  }
+
+  public onRemoveChart(id: string) {
+    const index = this.sensorGroups
+      .findIndex(sensorGroup => sensorGroup.id === id);
+    if (index !== -1) {
+      this.sensorGroups.splice(index, 1);
+    }
   }
 }

@@ -1,0 +1,13 @@
+<ng-template #drawer let-offcanvas>
+  <div class="offcanvas-header">
+    <h4 class="offcanvas-title">
+      <ng-content select="[title]"></ng-content>
+    </h4>
+    <button type="button" class="btn-close" aria-label="Close"
+            (click)="offcanvas.dismiss()"></button>
+  </div>
+  <div class="offcanvas-body">
+    <ng-content select="[content]"></ng-content>
+  </div>
+</ng-template>
+

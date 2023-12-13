@@ -5,8 +5,10 @@ import {
 
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import {ChartsDataService} from "../../services/charts-data.service";
-import {ISensor} from "../../interfaces/chart-data.interface";
+import { ChartsDataService } from "../../services/charts-data.service";
+import { ISensor } from "../../interfaces/sensor.interface";
+import { v4 as uuidv4 } from 'uuid';
+import {ISensorsGroup} from "../../interfaces/sensors-group.interface";
 
 @Component({
   selector: 'app-sensors-list-form',
@@ -22,7 +24,7 @@ import {ISensor} from "../../interfaces/chart-data.interface";
 export class SensorsListFormComponent implements OnChanges {
   @Input() list: string[] = [];
 
-  @Output() groupCreated = new EventEmitter<ISensor[]>();
+  @Output() created = new EventEmitter<ISensorsGroup>();
 
   public selectedSensor = null;
   public sensorsGroup: ISensor[] = [];
@@ -35,18 +37,24 @@ export class SensorsListFormComponent implements OnChanges {
   }
 
   public onAddSensorToGroup() {
-    this.sensorsGroup.push({
-      name: this.selectedSensor,
-      source: new ChartsDataService()
-    });
+    this.sensorsGroup = [
+      ...this.sensorsGroup, {
+        id: uuidv4(),
+        name: this.selectedSensor,
+        source: new ChartsDataService()
+      }
+    ];
   }
 
   public onRemoveSensorFromGroup(index: number) {
     this.sensorsGroup.splice(index, 1);
   }
 
-  public onCreateGroup() {
-    this.groupCreated.emit([...this.sensorsGroup]);
+  public onCreate() {
+    this.created.emit({
+      id: uuidv4(),
+      group: [...this.sensorsGroup]
+    });
     this.sensorsGroup = [];
   }
 }

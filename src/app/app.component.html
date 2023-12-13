@@ -1,14 +1,35 @@
-<div class="container">
-  <div class="row align-items-start">
-    <div class="col-3 p-3">
-      <app-sensors-list-form [list]="sensorsList"
-                             (groupCreated)="onGroupCreated($event)">
-      </app-sensors-list-form>
-    </div>
-    <div class="col p-3">
-      <ng-container *ngFor="let sensorGroup of sensorGroups">
-        <app-chart [sensors]="sensorGroup"></app-chart>
-      </ng-container>
+<nav class="navbar navbar-light bg-light p-3">
+  <button class="btn btn-lg btn-outline-primary"
+          tooltip
+          tooltipPlacement="end"
+          [tooltipText]="maxWarningTooltip"
+          [disabled]="sensorGroups.length >= maxAmountCharts"
+          (click)="addChartDrawer.open()">Add chart</button>
+</nav>
+
+<ng-container *ngIf="sensorGroups.length; else emptyGroups">
+  <div class="d-flex flex-row flex-wrap">
+    <div class="p-3 w-50 h-50"
+         *ngFor="let sensorGroup of sensorGroups; trackBy: trackBy">
+      <app-chart [sensors]="sensorGroup.group"
+                 [types]="chartTypes"
+                 [colors]="chartColors"
+                 (removed)="onRemoveChart(sensorGroup.id)"></app-chart>
     </div>
   </div>
-</div>
+</ng-container>
+
+<ng-template #emptyGroups>
+  <div class="empty text-muted d-flex justify-content-center align-items-center">
+    You have no charts here yet, but you can add :)
+  </div>
+</ng-template>
+
+<app-drawer #addChartDrawer>
+  <ng-container title>Add chart</ng-container>
+  <ng-container content>
+    <app-sensors-list-form [list]="sensorsList"
+                           (created)="onAddChart($event)">
+    </app-sensors-list-form>
+  </ng-container>
+</app-drawer>

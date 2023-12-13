@@ -1,6 +1,5 @@
-import {ChartsDataService} from "../services/charts-data.service";
+import {Observable} from "rxjs";
 
-export interface ISensor {
-  name: string | null;
-  source: ChartsDataService
+export interface IChartData<T> {
+  data$: Observable<T>;
 }

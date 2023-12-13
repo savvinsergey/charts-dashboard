@@ -1,6 +1,7 @@
 import {interval, map, tap} from "rxjs";
+import {IChartData} from "../interfaces/chart-data.interface";
 
-export class ChartsDataService {
+export class ChartsDataService implements IChartData<number[]> {
   private dataArr: number[] = [];
 
   public readonly data$ = interval(1000)

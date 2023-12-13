@@ -1,0 +1,8 @@
+<div [placement]="placement"
+     [ngbTooltip]="show ? tooltip : null">
+  <ng-content></ng-content>
+</div>
+
+<ng-template #tooltip>
+  {{ text }}
+</ng-template>
