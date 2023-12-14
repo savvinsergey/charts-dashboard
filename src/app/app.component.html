@@ -1,10 +1,17 @@
-<nav class="navbar navbar-light bg-light p-3">
-  <button class="btn btn-lg btn-outline-primary"
+<nav class="navbar navbar-light bg-light p-3 d-flex flex-row">
+  <button class="btn btn-md btn-outline-primary"
           tooltip
           tooltipPlacement="end"
           [tooltipText]="maxWarningTooltip"
           [disabled]="sensorGroups.length >= maxAmountCharts"
           (click)="addChartDrawer.open()">Add chart</button>
+  <div class="d-flex flex-row align-items-center">
+    <div class="text-muted mx-3">Dates filter:</div>
+    <app-datepicker-range
+      (changed)="onDatesChanged($event)">
+    </app-datepicker-range>
+  </div>
+
 </nav>
 
 <ng-container *ngIf="sensorGroups.length; else emptyGroups">
@@ -21,7 +28,7 @@
 
 <ng-template #emptyGroups>
   <div class="empty text-muted d-flex justify-content-center align-items-center">
-    You have no charts here yet, but you can add :)
+    You haven't had charts here yet, but you can add :)
   </div>
 </ng-template>
 

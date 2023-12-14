@@ -1,30 +1,34 @@
-<small class="text-muted">Please choose sensors:</small>
-<select class="form-select mb-2"
-        [(ngModel)]="selectedSensor">
-  <option *ngFor="let sensor of list"
-          [value]="sensor">
-    {{ sensor }}
-  </option>
-</select>
-<button type="button" class="btn btn-light w-100"
-        (click)="onAddSensorToGroup()">
-  Add
-</button>
+<form [formGroup]="form">
+  <small class="text-muted">Please choose sensors:</small>
+  <select class="form-select mb-2"
+          formControlName="selectedSensor">
+    <option *ngFor="let sensor of list"
+            [value]="sensor">
+      {{ sensor }}
+    </option>
+  </select>
+  <button type="button" class="btn btn-light w-100"
+          (click)="onAddSensorToGroup()">
+    Add
+  </button>
 
-<div class="group-items-list"
-     *ngIf="sensorsGroup.length">
-  <div class="group-item badge bg-light text-dark"
-       *ngFor="let sensor of sensorsGroup; let idx = index">
-    {{ sensor.name }}
-    <a class="btn-close" aria-label="Close"
-      (click)="onRemoveSensorFromGroup(idx)"></a>
-  </div>
-</div>
+  <ng-container formArrayName="sensorsGroup">
+    <div class="group-items-list"
+         *ngIf="sensorsGroupControl.value.length">
+      <div class="group-item badge bg-light text-dark"
+           *ngFor="let control of sensorsGroupControl.controls; index as idx">
+        {{ control.value.name }}
+        <a class="btn-close" aria-label="Close"
+           (click)="onRemoveSensorFromGroup(idx)"></a>
+      </div>
+    </div>
+  </ng-container>
 
-<button type="button" class="btn btn-primary w-100"
-        *ngIf="sensorsGroup.length"
-        (click)="onCreate()">
-  Create chat
-</button>
+  <button type="button" class="btn btn-primary w-100"
+          *ngIf="sensorsGroupControl.value.length"
+          (click)="onCreate()">
+    Create chat
+  </button>
+</form>
 
 

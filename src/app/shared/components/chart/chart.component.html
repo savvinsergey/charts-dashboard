@@ -1,31 +1,41 @@
 <div class="chart-block">
   <div class="chart-top">
-    <div class="btn-group"
-         role="group" aria-label="Chart buttons">
-      <button type="button" class="btn"
-              [ngClass]="currentType === types.LINE ? 'btn-primary' : 'btn-light'"
-              (click)="onChangeType(types.LINE)">
-        Line
-      </button>
-      <button type="button" class="btn"
-              [ngClass]="currentType === types.BAR ? 'btn-primary' : 'btn-light'"
-              (click)="onChangeType(types.BAR)">
-        Bar
-      </button>
-    </div>
+    <select class="form-select select-chart"
+            [(ngModel)]="currentChart">
+      <option *ngFor="let chart of series"
+              [ngValue]="chart">
+        {{ chart.name }}
+      </option>
+    </select>
 
-    <div class="d-flex flex-row align-items-center"
-      *ngIf="colors?.length">
-      <select class="form-select color-select"
-              [ngModel]="colors[0]"
-              (ngModelChange)="onChangeColor($event)">
-        <option *ngFor="let color of colors"
-                [value]="color">
-          {{ color }}
-        </option>
-      </select>
-      <button type="button" class="btn-close mx-2" aria-label="Close"
-              (click)="removed.emit()"></button>
+    <div class="d-flex flex-row">
+      <div class="btn-group mx-3"
+           role="group" aria-label="Chart buttons">
+        <button type="button" class="btn"
+                [ngClass]="currentChart.type === types.LINE ? 'btn-primary' : 'btn-light'"
+                (click)="onChangeType(types.LINE)">
+          Line
+        </button>
+        <button type="button" class="btn"
+                [ngClass]="currentChart.type === types.BAR ? 'btn-primary' : 'btn-light'"
+                (click)="onChangeType(types.BAR)">
+          Bar
+        </button>
+      </div>
+
+      <div class="d-flex flex-row align-items-center"
+        *ngIf="colors?.length">
+        <select class="form-select color-select"
+                [ngModel]="currentChart.color"
+                (ngModelChange)="onChangeColor($event)">
+          <option *ngFor="let color of colors"
+                  [value]="color">
+            {{ color }}
+          </option>
+        </select>
+        <button type="button" class="btn-close mx-2" aria-label="Close"
+                (click)="removed.emit()"></button>
+      </div>
     </div>
   </div>
 

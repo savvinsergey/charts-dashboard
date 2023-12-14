@@ -18,6 +18,6 @@ import {NgbTooltipModule} from "@ng-bootstrap/ng-bootstrap";
 })
 export class TooltipComponent {
   @Input() show = false;
-  @Input() text: string | TemplateRef<any> = '';
+  @Input() text: string = '';
   @Input() placement: 'start' | 'end' | 'top' | 'bottom' = 'bottom';
 }

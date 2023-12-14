@@ -20,7 +20,7 @@ export class TooltipForDisabledBtnDirective implements OnInit, OnDestroy {
 
   // --------------- //
 
-  @Input() tooltipText: string | TemplateRef<any> = '';
+  @Input() tooltipText: string = '';
   @Input() tooltipPlacement = 'bottom';
   @Input('disabled')
   set disabled(val: boolean) {
@@ -34,7 +34,7 @@ export class TooltipForDisabledBtnDirective implements OnInit, OnDestroy {
     this.componentRef?.setInput('show', val);
   }
 
-  private componentRef: ComponentRef<any> | undefined;
+  private componentRef: ComponentRef<TooltipComponent> | undefined;
 
   ngOnInit() {
     this.create();

@@ -7,6 +7,7 @@ import { SensorsListFormComponent } from "./shared/components/sensors-list-form/
 import { DrawerComponent } from "./shared/components/drawer/drawer.component";
 import { NgbTooltipModule } from "@ng-bootstrap/ng-bootstrap";
 import { TooltipForDisabledBtnDirective } from "./shared/directives/tooltip-for-disabled-btn.directive";
+import { DatepickerRangeComponent } from "./shared/components/datepicker-range/datepicker-range.component";
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { TooltipForDisabledBtnDirective } from "./shared/directives/tooltip-for-
     ChartComponent,
     DrawerComponent,
     SensorsListFormComponent,
-    TooltipForDisabledBtnDirective
+    TooltipForDisabledBtnDirective,
+    DatepickerRangeComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
